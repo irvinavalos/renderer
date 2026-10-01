@@ -16,3 +16,8 @@ target_include_directories(raytracer INTERFACE include)
 add_executable(prog src/main.cpp)
 target_link_libraries(prog PRIVATE raytracer)
 target_compile_options(prog PRIVATE -Wall -Wextra -Wpedantic)
+
+add_executable(tests tests/test_main.cpp tests/test_tuple.cpp)
+target_link_libraries(tests PRIVATE raytracer)
+target_include_directories(tests PRIVATE third_party)
+target_compile_options(tests PRIVATE -Wall -Wextra -Wpedantic)

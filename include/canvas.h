@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <fstream>
+#include <filesystem>
+#include <stdexcept>
 #include <print>
 #include <string>
 
@@ -41,7 +43,7 @@ private:
     }
 };
 
-inline void ppm_line_check_length(std::ofstream& out, const std::string& src, std::string& dst) {
+inline void ppm_line_check_length(std::ostream& out, const std::string& src, std::string& dst) {
     // If the sum of the lengths between the two strings exceeds 70,
     // then we are safe to wrap around to the next line
     if (src.length() + dst.length() >= 70) {
@@ -53,17 +55,15 @@ inline void ppm_line_check_length(std::ofstream& out, const std::string& src, st
     }
 }
 
-inline void ppm_line_add_string(std::ofstream& out, const std::string& src, std::string& dst) {
+inline void ppm_line_add_string(std::ostream& out, const std::string& src, std::string& dst) {
     ppm_line_check_length(out, src, dst);
     dst += src;
 }
 
 
-inline void canvas_to_ppm(const canvas& canvas) {
+inline void canvas_to_ppm(const canvas& canvas, std::ostream& out) {
     auto width = canvas.width();
     auto height = canvas.height();
-
-    std::ofstream out("image.ppm");
 
     std::print(out, "P3\n");
     std::print(out, "{} {}\n", width, height);
@@ -94,6 +94,17 @@ inline void canvas_to_ppm(const canvas& canvas) {
     }
 
     std::print(out, "\n");
+}
+
+inline void save_ppm(const canvas& c, const std::filesystem::path& path) {
+    if (path.has_parent_path()) {
+        std::filesystem::create_directories(path.parent_path());
+    }
+    std::ofstream out(path);
+    if (!out) {
+        throw std::runtime_error("ERROR: could not open " + path.string());
+    }
+    canvas_to_ppm(c, out);
 }
 
 #endif // !CANVAS_H
