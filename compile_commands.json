@@ -1,0 +1,14 @@
+[
+  {
+    "file": "main.cpp",
+    "arguments": [
+      "/usr/sbin/g++",
+      "-std=c++23",
+      "main.cpp",
+      "-o",
+      "prog"
+    ],
+    "directory": "/home/irvin/git/renderer",
+    "output": "prog"
+  }
+]
