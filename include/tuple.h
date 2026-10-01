@@ -89,7 +89,7 @@ public:
     }
 
     double& operator()(std::size_t n) {
-        assert(( n >= 0 && n <= 3 ) && "ERROR: index for tuple is out of bounds");
+        assert(n <= 3 && "ERROR: index for tuple is out of bounds");
 
         if (n == 0) {
             return _x;
@@ -102,7 +102,7 @@ public:
     }
 
     double operator()(std::size_t n) const {
-        assert(( n >= 0 && n <= 3 ) && "ERROR: index for tuple is out of bounds");
+        assert(n <= 3 && "ERROR: index for tuple is out of bounds");
 
         if (n == 0) {
             return _x;

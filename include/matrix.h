@@ -54,8 +54,8 @@ public:
     static inline matrix_t identity_matrix() {
         matrix_t ident{};
 
-        for (int r = 0; r < N; r++) {
-            for (int c = 0; c < N; c++) {
+        for (std::size_t r = 0; r < N; r++) {
+            for (std::size_t c = 0; c < N; c++) {
                 if (r == c) {
                     ident(r, c) = 1.0;
                 }
@@ -70,8 +70,8 @@ public:
     inline bool is_invertible() const { return !equalf(determinant(*this), 0.0); }
 
     bool operator==(const matrix_t& other) const {
-        for (int r = 0; r < N; r++) {
-            for (int c = 0; c < N; c++) {
+        for (std::size_t r = 0; r < N; r++) {
+            for (std::size_t c = 0; c < N; c++) {
                 if (!equalf((*this)(r, c) , other(r, c))) {
                     return false;
                 }
@@ -103,9 +103,9 @@ struct std::formatter<matrix_t<N>> {
     auto format(const matrix_t<N>& m, std::format_context& ctx) const {
         std::string matrix_str = "";
 
-        for (int r = 0; r < N; r++) {
+        for (std::size_t r = 0; r < N; r++) {
             matrix_str += "|";
-            for (int c = 0; c < N; c++) {
+            for (std::size_t c = 0; c < N; c++) {
                 matrix_str += std::format(" {:^9.3f}", m(r, c));
             }
             matrix_str += " |\n";
@@ -119,10 +119,10 @@ template <std::size_t N>
 inline matrix_t<N> operator*(const matrix_t<N>& lhs, const matrix_t<N>& rhs) {
     matrix_t<N> prod{};
 
-    for (int r = 0; r < N; r++) {
-        for (int c = 0; c < N; c++) {
+    for (std::size_t r = 0; r < N; r++) {
+        for (std::size_t c = 0; c < N; c++) {
             double sum = 0.0;
-            for (int k = 0; k < N; k++) {
+            for (std::size_t k = 0; k < N; k++) {
                 sum += lhs(r, k) * rhs(k, c);
             }
             prod(r, c) = sum;
@@ -135,9 +135,9 @@ inline matrix_t<N> operator*(const matrix_t<N>& lhs, const matrix_t<N>& rhs) {
 inline tuple_t operator*(const matrix_t<4>& lhs, const tuple_t& rhs) {
     tuple_t t{};
 
-    for (int r = 0; r < 4; r++) {
+    for (std::size_t r = 0; r < 4; r++) {
         double sum = 0.0;
-        for (int k = 0; k < 4; k++) {
+        for (std::size_t k = 0; k < 4; k++) {
             sum += lhs(r, k) * rhs(k);
         }
         t(r) = sum;
@@ -151,8 +151,8 @@ inline matrix_t<N> transpose(const matrix_t<N>& mat) {
     matrix_t<N> transposed{};
 
 
-    for (int r = 0; r < N; r++) {
-        for (int c = 0; c < N; c++) {
+    for (std::size_t r = 0; r < N; r++) {
+        for (std::size_t c = 0; c < N; c++) {
             transposed(r, c) = mat(c, r);
         }
     }
@@ -167,7 +167,7 @@ inline double determinant(const matrix_t<N>& mat) {
     if constexpr (N == 2) {
         det += (mat(0, 0) * mat(1, 1)) - (mat(0, 1) * mat(1, 0));
     } else {
-        for (int c = 0; c < N; c++) {
+        for (std::size_t c = 0; c < N; c++) {
             det += mat(0, c) * cofactor(mat, 0, c);
         }
     }
@@ -181,11 +181,11 @@ inline matrix_t<N - 1> submatrix(const matrix_t<N>& mat, std::size_t row_to_excl
 
     matrix_t<N - 1> submat{};
 
-    int s_row = 0;
-    for (int r = 0; r < N; r++) {
+    std::size_t s_row = 0;
+    for (std::size_t r = 0; r < N; r++) {
         if (r == row_to_exclude) { continue; }
-        int s_col = 0;
-        for (int c = 0; c < N; c++) {
+        std::size_t s_col = 0;
+        for (std::size_t c = 0; c < N; c++) {
             if (c == col_to_exclude) { continue; }
             submat(s_row, s_col) = mat(r, c);
             s_col += 1;
