@@ -2,6 +2,7 @@
 #define COLOR_H
 
 #include <string>
+#include <cmath>
 
 #include "helpers.h"
 
@@ -96,15 +97,10 @@ inline int get_color_value(double color_channel) {
     } else if (greater_than_or_equal(color_channel, 1.0)) {
         return color_t::MAX_COLOR;
     }
-    return static_cast<int>(color_channel * color_t::MAX_COLOR);
+    return static_cast<int>(std::lround(color_channel * color_t::MAX_COLOR));
 }
 
 inline std::string get_color_string(int color_value) {
-    if (color_value == color_t::MIN_COLOR) {
-        return "0 0";
-    } else if (color_value == color_t::MAX_COLOR) {
-        return "255";
-    }
     return std::to_string(color_value);
 }
 

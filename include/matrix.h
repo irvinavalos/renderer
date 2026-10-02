@@ -220,8 +220,8 @@ inline matrix_t<N> inverse(const matrix_t<N>& mat) {
     matrix_t<N> res{};
     double det = determinant(mat);
 
-    for (int r = 0; r < N; r++) {
-        for (int c = 0; c < N; c++) {
+    for (std::size_t r = 0; r < N; r++) {
+        for (std::size_t c = 0; c < N; c++) {
             res(c, r) = cofactor(mat, r, c) / det;
         }
     }
